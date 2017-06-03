@@ -13,7 +13,7 @@ def dd(check, target):
 def check(word,target):
     d = dd(word, target)
     while True:
-        temp = d
+
         if d is False:
             return "กรุณาติดต่อเจ้าหน้าที่"
         if d is None:
@@ -23,6 +23,7 @@ def check(word,target):
             return d
         else:
             if isinstance(d,dict):
+                temp = d
                 d = dd(word,d)
 if __name__ == '__main__':
     x = input("มีปัญหาเกี่ยวกับอะไร : ")
