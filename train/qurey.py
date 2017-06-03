@@ -12,6 +12,7 @@ def dd(check, target):
         return target
 def check(word,target):
     d = dd(word, target)
+    temp = d
     while True:
 
         if d is False:
