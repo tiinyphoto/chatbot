@@ -39,6 +39,9 @@ jj = {"ff":"tin"}
 ii = {"tin":jj,'2':3}
 check = "tin"
 check2 = "ff"
+
+
+
 if check in ii:
     print(ii[check])
     if check2 in ii[check]:
