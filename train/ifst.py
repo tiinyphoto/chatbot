@@ -31,3 +31,14 @@ for i in "abcd1234":
 print("\n")
 for i in {'cat','dog','tin'}:
     print(i)
+print("\n")
+for i in range(10):
+    for j in range(i):
+        print("*")
+
+ii = {"tin":"dog",'2':3}
+check = "tin"
+if check in ii:
+    print(ii[check])
+else:
+    print("not")
