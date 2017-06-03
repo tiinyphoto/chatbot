@@ -35,10 +35,11 @@ print("\n")
 for i in range(10):
     for j in range(i):
         print("*")
-
-ii = {"tin":"dog",'2':3}
+jj = {"ff":"tin"}
+ii = {"tin":jj,'2':3}
 check = "tin"
 if check in ii:
     print(ii[check])
+    
 else:
     print("not")
