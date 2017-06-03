@@ -14,9 +14,9 @@ comment.
 str = "hidsffsdvklfbs"
 if "hi" in str:
     print("have")
-
+print("\n")
 for i in range(10):
     print(i)
-
+print("\n")
 for i in range(0,10,2):
     print(i)
