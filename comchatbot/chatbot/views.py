@@ -36,8 +36,10 @@ class Chat(generic.View):
     def dbcheck(self,q):
         con = sqlite3.connect('dbcheck.db')
         c = con.cursor()
-        c.execute("SELECT A FROM check WHERE Q = '%s'" % q)
-        return c.fetchall()
+        c.execute("SELECT A FROM fqa WHERE Q = '%s'" % q)
+        con.close()
+        c.close()
+        return c.fetchone()
     def post(self, request, *args, **kwargs):
         incoming_message = json.loads(self.request.body.decode('utf-8'))
         entry = incoming_message['entry']
@@ -48,9 +50,7 @@ class Chat(generic.View):
                     message = messaging["message"]["text"]
                     #
 
-                    message = self.dbcheck(message)
-                    if message is "":
-                       message =  "กรุณาติดต่อกลับ"
+                    #message = self.dbcheck(message)
                 self.post_facebook_message(sender,message)
 
         return HttpResponse()
