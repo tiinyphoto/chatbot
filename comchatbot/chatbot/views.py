@@ -1,5 +1,6 @@
 import json
 import requests
+import sqlite3
 from django.shortcuts import render
 
 # Create your views here.
@@ -63,7 +64,11 @@ class Chat(generic.View):
                 if isinstance(d, dict):
                     temp = d
                     d = self.check2(word, d)
-
+    def dbcheck(self,Q):
+        con = sqlite3.connect('dbcheck.db')
+        c = con.cursor()
+        c.execute("SELECT A FROM check WHERE Q = '%s'" % Q)
+        return c.fetchone()
     def post(self, request, *args, **kwargs):
         incoming_message = json.loads(self.request.body.decode('utf-8'))
         entry = incoming_message['entry']
@@ -74,8 +79,9 @@ class Chat(generic.View):
                     message = messaging["message"]["text"]
                     #
                     if message in self.dict_target:
-                        self.check(message,self.dict_target,sender)
-                    #
+                        message = self.dbcheck(message)
+                    else:
+                        message =  "กรุณาติดต่อกลับ"
                 self.post_facebook_message(sender,message)
 
         return HttpResponse()
