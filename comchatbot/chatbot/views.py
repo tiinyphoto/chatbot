@@ -12,6 +12,10 @@ from django.views.decorators.csrf import csrf_exempt
 
 
 class Chat(generic.View):
+    wifidic = {"เข้าไม่ได้": "ปิดเปิดใหม่", "เชื่อมไม่ได้้": "ปิดเปิดใหม่", "ต่อไม่ติด": "ปิดเปิดใหม่"}
+    landic = {"เข้าไม่ได้": "ถอดเสียบใหม่", "เชื่อมไม่ได้้": "ถอดเสียบใหม่", "ต่อไม่ติด": "ถอดเสียบใหม่"}
+    internetdic = {"wifi": wifidic, 'lan': landic}
+    dict_target = {"internet": internetdic, "wifi": wifidic, 'lan': landic}
 
     def get(self, request, *args, **kwargs):
         if self.request.GET['hub.verify_token'] == 'Chat@botcatflukenior':
@@ -38,23 +42,28 @@ class Chat(generic.View):
         elif isinstance(target, str):
             return target
 
-    def check(self,word, target):
+    def check(self,word, target,sender):
         d = self.check2(word, target)
         temp = d
 
         while True:
 
             if d is False:
-                return "กรุณาติดต่อเจ้าหน้าที่"
+                self.post_facebook_message(sender, "กรุณาติดต่อเจ้าหน้าที่")
+                return False
             if d is None:
-                arg2 = input("ขอรายละเอียดเพิ่มเติ่ม: ")
-                d = self.check2(arg2, temp)
+                str=""
+                for item in target:
+                    str=+str(target[item])
+                self.post_facebook_message(sender, "")
+                #d = self.check2(str, temp)
             if isinstance(d, str):
                 return d
             else:
                 if isinstance(d, dict):
                     temp = d
                     d = self.check2(word, d)
+
     def post(self, request, *args, **kwargs):
         incoming_message = json.loads(self.request.body.decode('utf-8'))
         entry = incoming_message['entry']
@@ -64,11 +73,13 @@ class Chat(generic.View):
                     sender = messaging["sender"]["id"]
                     message = messaging["message"]["text"]
                     #
-
+                    if message in self.dict_target:
+                        self.check(message,self.dict_target,sender)
                     #
                 self.post_facebook_message(sender,message)
 
         return HttpResponse()
+
 
 
 
