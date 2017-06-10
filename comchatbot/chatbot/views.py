@@ -33,42 +33,11 @@ class Chat(generic.View):
     def dispatch(self, request, *args, **kwargs):
         return generic.View.dispatch(self, request, *args, **kwargs)
         # Post function to handle Facebook messages
-
-    def check2(self,check, target):
-        if target is None:
-            return False
-        if isinstance(target, dict):
-            if check in target:
-                return target[check]
-        elif isinstance(target, str):
-            return target
-
-    def check(self,word, target,sender):
-        d = self.check2(word, target)
-        temp = d
-
-        while True:
-
-            if d is False:
-                self.post_facebook_message(sender, "กรุณาติดต่อเจ้าหน้าที่")
-                return False
-            if d is None:
-                str=""
-                for item in target:
-                    str=+str(target[item])
-                self.post_facebook_message(sender, "")
-                #d = self.check2(str, temp)
-            if isinstance(d, str):
-                return d
-            else:
-                if isinstance(d, dict):
-                    temp = d
-                    d = self.check2(word, d)
-    def dbcheck(self,Q):
+    def dbcheck(self,q):
         con = sqlite3.connect('dbcheck.db')
         c = con.cursor()
-        c.execute("SELECT A FROM check WHERE Q = '%s'" % Q)
-        return c.fetchone()
+        c.execute("SELECT A FROM check WHERE Q = '%s'" % q)
+        return c.fetchall()
     def post(self, request, *args, **kwargs):
         incoming_message = json.loads(self.request.body.decode('utf-8'))
         entry = incoming_message['entry']
@@ -78,10 +47,10 @@ class Chat(generic.View):
                     sender = messaging["sender"]["id"]
                     message = messaging["message"]["text"]
                     #
-                    if message in self.dict_target:
-                        message = self.dbcheck(message)
-                    else:
-                        message =  "กรุณาติดต่อกลับ"
+
+                    message = self.dbcheck(message)
+                    if message is "":
+                       message =  "กรุณาติดต่อกลับ"
                 self.post_facebook_message(sender,message)
 
         return HttpResponse()
