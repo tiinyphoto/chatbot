@@ -1,5 +1,6 @@
-wifidic = {"เข้าไม่ได้":"ปิดเปิดใหม่"}
-landic ={"เข้าไม่ได้":"ถอดเสียบใหม่"}
+
+wifidic = {"เข้าไม่ได้":"ปิดเปิดใหม่","เชื่อมไม่ได้้":"ปิดเปิดใหม่","ต่อไม่ติด":"ปิดเปิดใหม่"}
+landic ={"เข้าไม่ได้":"ถอดเสียบใหม่","เชื่อมไม่ได้้":"ถอดเสียบใหม่","ต่อไม่ติด":"ถอดเสียบใหม่"}
 internetdic = {"wifi":wifidic,'lan':landic}
 dict_target = {"internet":internetdic,"wifi":wifidic,'lan':landic}
 def dd(check, target):
@@ -13,6 +14,7 @@ def dd(check, target):
 def check(word,target):
     d = dd(word, target)
     temp = d
+
     while True:
 
         if d is False:

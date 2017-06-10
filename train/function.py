@@ -17,6 +17,7 @@ def dd(check,target):
         return target
 
 if __name__ == '__main__':
+    print (go)
     while True:
         d = dd("str",dict_target)
         if isinstance(d,str):
