@@ -12,7 +12,10 @@ from django.http.response import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
 
+
+
 class Chat(generic.View):
+
     wifidic = {"เข้าไม่ได้": "ปิดเปิดใหม่", "เชื่อมไม่ได้้": "ปิดเปิดใหม่", "ต่อไม่ติด": "ปิดเปิดใหม่"}
     landic = {"เข้าไม่ได้": "ถอดเสียบใหม่", "เชื่อมไม่ได้้": "ถอดเสียบใหม่", "ต่อไม่ติด": "ถอดเสียบใหม่"}
     internetdic = {"wifi": wifidic, 'lan': landic}
@@ -51,6 +54,7 @@ class Chat(generic.View):
                     #
 
                     #message = self.dbcheck(message)
+
                 self.post_facebook_message(sender,message)
 
         return HttpResponse()
