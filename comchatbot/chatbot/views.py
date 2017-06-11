@@ -42,7 +42,7 @@ class Chat(generic.View):
         c.execute("SELECT A FROM fqa WHERE Q = '%s'" % q)
         con.close()
         c.close()
-        return c.fetchone()
+        #return c.fetchone()
     def post(self, request, *args, **kwargs):
         incoming_message = json.loads(self.request.body.decode('utf-8'))
         entry = incoming_message['entry']
