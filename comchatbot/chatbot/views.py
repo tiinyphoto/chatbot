@@ -1,6 +1,7 @@
 import json
 import requests
 import sqlite3
+import re
 from django.shortcuts import render
 
 # Create your views here.
@@ -10,7 +11,6 @@ from django.utils.decorators import method_decorator
 from django.views import generic
 from django.http.response import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-
 
 
 
@@ -36,26 +36,40 @@ class Chat(generic.View):
     def dispatch(self, request, *args, **kwargs):
         return generic.View.dispatch(self, request, *args, **kwargs)
         # Post function to handle Facebook messages
-    def dbcheck(self,q):
+    def dbcheck(q):
         con = sqlite3.connect('dbcheck.db')
         c = con.cursor()
         c.execute("SELECT A FROM fqa WHERE Q = '%s'" % q)
-        con.close()
-        c.close()
-        #return c.fetchone()
+        return c.fetchone()
+
+
+    #ms1=str(dbcheck("hi"))
+    #print(ms1)
+    #ms2=re.sub('\W+',"",ms1,0)
+    #print(ms2)
+
+
+
     def post(self, request, *args, **kwargs):
+        print(222)
         incoming_message = json.loads(self.request.body.decode('utf-8'))
         entry = incoming_message['entry']
         for en in entry:
+
             for messaging in en["messaging"]:
                 if "message" in messaging :
                     sender = messaging["sender"]["id"]
                     message = messaging["message"]["text"]
-                    #
+                    message =str(message)
+                    con = sqlite3.connect('dbcheck.db')
+                    c = con.cursor()
+                    c.execute("SELECT A FROM fqa WHERE Q = '%s'" % message)
+                    ms1 = str(c.fetchone())
+                    callback = re.sub('\W+', "", ms1, 0)
+                    print(callback)
 
-                    #message = self.dbcheck(message)
 
-                self.post_facebook_message(sender,message)
+                self.post_facebook_message(sender,callback)
 
         return HttpResponse()
 
